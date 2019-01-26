@@ -348,6 +348,7 @@ MonoBehaviour:
   obstacles:
   - {fileID: 1719638985817082, guid: 998d1606b239c7e4abe23da0b01566f0, type: 2}
   - {fileID: 1415514332690312, guid: c70d65b445ef0d846ad5bfc09ad434b0, type: 2}
+  - {fileID: 1415514332690312, guid: c70d65b445ef0d846ad5bfc09ad434b0, type: 2}
   bgSpeed: 7
   numberOfBgs: 4
   numOfRemovedBgs: 0
