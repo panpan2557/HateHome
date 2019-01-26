@@ -27,7 +27,7 @@ public class LanesController : MonoBehaviour {
         
         laneObjects = GameController.instance.lanes;
         Debug.Log(bgSize.y);
-		bgSpeed = GameController.instance.lanesSpeed; // get lanes speed from the controller
+		bgSpeed = GetLanesSpeed();
 		// init terrain linked list
 		t1 = new TerrainLinkedList(terrains[0]);
 		t2 = new TerrainLinkedList(terrains[1]);
@@ -48,7 +48,10 @@ public class LanesController : MonoBehaviour {
 		currentTerrain = currentTerrain.next();
         Debug.Log("starttt    "+laneObjects.Length);
     }
-	
+
+	float GetLanesSpeed() {
+		return GameController.instance.lanesSpeed; // get lanes speed from the controller
+	}	
 	public void MoveBackground() {
 		foreach (GameObject bg in bgs) {
 			Vector3 pos = bg.transform.position;
@@ -89,6 +92,7 @@ public class LanesController : MonoBehaviour {
 
 	void FixedUpdate () {
 		frameCounter++;
+		bgSpeed = GetLanesSpeed();
 		if (frameCounter % spawnAtFrame == 0) {
 			RandomInstantiateObstacle();
 			if (spawnAtFrame > 30) {
@@ -128,6 +132,7 @@ public class LanesController : MonoBehaviour {
 
 	void Spawn(int randLane, bool isDoubleSpawned = false) {
 		GameObject obstacle = Instantiate(obstacles[0]);
+		obstacle.GetComponent<ObstacleInfo>().lane = randLane;
 		float randPosX = spawnPoint.transform.position.x;
 		Vector3 obsPosition = Vector3.zero;
 		if (isDoubleSpawned) {

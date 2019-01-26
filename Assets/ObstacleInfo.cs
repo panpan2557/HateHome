@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FenceInfo : MonoBehaviour {
+public class ObstacleInfo : MonoBehaviour {
 
     public float startPos;
+	public int lane;
 	// Use this for initialization
 	void Start () {
 		
