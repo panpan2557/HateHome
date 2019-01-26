@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour {
 	public float maxLanesSpeed;
 	public float lanesSpeed;
 	public float rushLanesSpeed = 1f;
+    public float revertSunsetSpeed = 2f;
 	public float currentSunHeight, maxSunHeight, minSunHeight, maxSunsetSpeed, sunsetSpeed;
 	public float collideSpeedPenalty = 2f;
 	public bool isGameOver;
@@ -26,17 +27,19 @@ public class GameController : MonoBehaviour {
         currentSunHeight = maxSunHeight;
         buildings = this.sun.GetComponent<SunSystemInfo>().buildings;
         skys = this.sun.GetComponent<SunSystemInfo>().skys;
-
     }
 	void Update () {
+        Debug.Log(currentSunHeight + "/" + minSunHeight + " : " + isSunAtMin());
 		if (isSunAtMin()) {
 			// Gameover
 			Debug.Log("Gameover!");
 			isGameOver = true;
-			// Stop lanes, obstacle generation
-			lanesSpeed = 0f;
-			// Destroy all obstacles
-			GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
+            // Stop lanes, obstacle generation
+            lanesSpeed = 0f;
+            this.sun.GetComponent<SunSystemInfo>().skysSpeed = 0;
+            this.sun.GetComponent<SunSystemInfo>().buildingsSpeed = 0;
+            // Destroy all obstacles
+            GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
 			foreach (GameObject o in obstacles) {
 				Destroy(o);
 			}
@@ -53,16 +56,16 @@ public class GameController : MonoBehaviour {
 
 			float calSpeed = this.sunsetSpeed;
 			if (maxLanesSpeed - lanesSpeed != 0) { // slower than max lanes speed
-				if (calSpeed + 0.3f * Time.deltaTime >= maxSunsetSpeed) 
+				if (calSpeed + 1f * Time.deltaTime >= maxSunsetSpeed) 
 					calSpeed = maxSunsetSpeed;
 				else
-					calSpeed += 0.3f * Time.deltaTime;
+					calSpeed -= 1f * Time.deltaTime;
 			} else if (maxLanesSpeed - lanesSpeed == 0) { // catch up the max speed
 				if (currentSunHeight + calSpeed * Time.deltaTime >= maxSunHeight) {
 					calSpeed = 0;
 					currentSunHeight = maxSunHeight;
 				} else
-					calSpeed -= 0.3f * Time.deltaTime; 
+					calSpeed += 1f * Time.deltaTime; 
 			}
 			this.sunsetSpeed = calSpeed;
 			SunSetting();
@@ -76,52 +79,50 @@ public class GameController : MonoBehaviour {
 	void SunSetting() {
         GameObject sun = this.sun.GetComponent<SunSystemInfo>().sun;
         Vector3 rot = sun.transform.eulerAngles;
-        if (rot.z > 333)
-        {
-            rot.z -= sunsetSpeed * Time.deltaTime;
-            sun.transform.eulerAngles = rot;
-            currentSunHeight = rot.z;
-
-            //Debug.Log(1 - ((maxSunHeight - currentSunHeight) / 20));
-            for (int i = 0; i < buildings.Count; i++) {
-                SpriteRenderer b = buildings[i].GetComponent<SpriteRenderer>();
-                SpriteRenderer s = skys[i].GetComponent<SpriteRenderer>();
-                Color color = b.color;
-                color.a = 1 - ((maxSunHeight - currentSunHeight) / 20);
-                b.color = color;
-                s.color = color;
-            }
-            //SpriteRenderer building = this.sun.GetComponent<SunSystemInfo>().building.GetComponent<SpriteRenderer>();
-            //Color colorB = building.color;
-            //colorB.a = 1 - ((maxSunHeight - currentSunHeight) / 20);
-            //building.color = colorB;
-
-            //SpriteRenderer sky = this.sun.GetComponent<SunSystemInfo>().sky.GetComponent<SpriteRenderer>();
-            //Color colorS = sky.color;
-            //colorS.a = 1 - ((maxSunHeight - currentSunHeight) / 20);
-            //sky.color = colorS;
+        Debug.Log("rot.z: " + rot.z + ", maxSunHeight: " + maxSunHeight);
+        rot.z += sunsetSpeed * Time.deltaTime;
+        sun.transform.eulerAngles = rot;
+        currentSunHeight = rot.z;
+        
+        for (int i = 0; i < buildings.Count; i++) {
+            SpriteRenderer b = buildings[i].GetComponent<SpriteRenderer>();
+            SpriteRenderer s = skys[i].GetComponent<SpriteRenderer>();
+            Color color = b.color;
+            color.a = 1 - ((maxSunHeight - currentSunHeight) / 20);
+            b.color = color;
+            s.color = color;
         }
-        else {
-            sun.GetComponentInChildren<Light>().intensity = 0;
-            for (int i = 0; i < buildings.Count; i++)
-            {
-                SpriteRenderer b = buildings[i].GetComponent<SpriteRenderer>();
-                SpriteRenderer s = skys[i].GetComponent<SpriteRenderer>();
-                Color color = b.color;
-                color.a = 0;
-                b.color = color;
-                s.color = color;
-            }
-            //SpriteRenderer building = this.sun.GetComponent<SunSystemInfo>().building.GetComponent<SpriteRenderer>();
-            //Color colorB = building.color;
-            //colorB.a = 0;
-            //building.color = colorB;
 
-            //SpriteRenderer sky = this.sun.GetComponent<SunSystemInfo>().sky.GetComponent<SpriteRenderer>();
-            //Color colorS = sky.color;
-            //colorS.a = 0;
-            //sky.color = colorS;
-        }
+        //sun.GetComponentInChildren<Light>().intensity = 0;
+        //for (int i = 0; i < buildings.Count; i++)
+        //{
+        //    SpriteRenderer b = buildings[i].GetComponent<SpriteRenderer>();
+        //    SpriteRenderer s = skys[i].GetComponent<SpriteRenderer>();
+        //    Color color = b.color;
+        //    color.a = 0;
+        //    b.color = color;
+        //    s.color = color;
+        //}
+
+        //SpriteRenderer building = this.sun.GetComponent<SunSystemInfo>().building.GetComponent<SpriteRenderer>();
+        //Color colorB = building.color;
+        //colorB.a = 1 - ((maxSunHeight - currentSunHeight) / 20);
+        //building.color = colorB;
+
+        //SpriteRenderer sky = this.sun.GetComponent<SunSystemInfo>().sky.GetComponent<SpriteRenderer>();
+        //Color colorS = sky.color;
+        //colorS.a = 1 - ((maxSunHeight - currentSunHeight) / 20);
+        //sky.color = colorS;
+
+        //SpriteRenderer building = this.sun.GetComponent<SunSystemInfo>().building.GetComponent<SpriteRenderer>();
+        //Color colorB = building.color;
+        //colorB.a = 0;
+        //building.color = colorB;
+
+        //SpriteRenderer sky = this.sun.GetComponent<SunSystemInfo>().sky.GetComponent<SpriteRenderer>();
+        //Color colorS = sky.color;
+        //colorS.a = 0;
+        //sky.color = colorS;
 
         //      Vector3 pos = sun.transform.position;
         //pos.y -= sunsetSpeed * Time.deltaTime;

@@ -914,11 +914,12 @@ MonoBehaviour:
   maxLanesSpeed: 6
   lanesSpeed: 0
   rushLanesSpeed: 2
+  revertSunsetSpeed: 2
   currentSunHeight: 0
-  maxSunHeight: 3.3
-  minSunHeight: -1.75
-  maxSunsetSpeed: 0.5
-  sunsetSpeed: 0
+  maxSunHeight: 353
+  minSunHeight: 333
+  maxSunsetSpeed: 5
+  sunsetSpeed: 10
   collideSpeedPenalty: 4
   isGameOver: 0
   buildings: []
@@ -1270,7 +1271,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.8956151, y: 0.9193727}
+  m_Size: {x: 0.72, y: 0.83}
   m_EdgeRadius: 0
 --- !u!95 &1761150813
 Animator:
