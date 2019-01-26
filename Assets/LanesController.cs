@@ -24,6 +24,7 @@ public class LanesController : MonoBehaviour {
 	private bool isGameOver;
 	public static LanesController instance;
     private GameObject player;
+    private float distantScore;
 	void Awake () {
 		instance = this;
 	}
@@ -67,7 +68,10 @@ public class LanesController : MonoBehaviour {
 		foreach (GameObject bg in bgs) {
 			Vector3 pos = bg.transform.position;
 			pos.x -= (bgSpeed * Time.deltaTime);
-			bg.transform.position = pos;
+            distantScore += bgSpeed * Time.deltaTime;
+            GameController.instance.score.text = Mathf.Round(distantScore) + " M";
+
+            bg.transform.position = pos;
 		}
 	}
 

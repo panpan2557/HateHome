@@ -1571,6 +1571,7 @@ MonoBehaviour:
   isGameOver: 0
   buildings: []
   skys: []
+  score: {fileID: 1413281828}
 --- !u!4 &1372223181
 Transform:
   m_ObjectHideFlags: 0
