@@ -34,18 +34,21 @@ public class GameController : MonoBehaviour {
 			// Gameover
 			Debug.Log("Gameover!");
 			isGameOver = true;
-            // Stop lanes, obstacle generation
-            lanesSpeed = 0f;
-            this.sun.GetComponent<SunSystemInfo>().skysSpeed = 0;
-            this.sun.GetComponent<SunSystemInfo>().buildingsSpeed = 0;
+            
             // Destroy all obstacles
             GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
 			foreach (GameObject o in obstacles) {
 				Destroy(o);
 			}
-			// Prepare for End Scene
-			// - Trigger something in animator
-		} else {
+
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().SetInteger("status", 3);
+            // Stop lanes, obstacle generation
+            /*lanesSpeed = 0f;
+            this.sun.GetComponent<SunSystemInfo>().skysSpeed = 0;
+            this.sun.GetComponent<SunSystemInfo>().buildingsSpeed = 0;*/
+            // Prepare for End Scene
+            // - Trigger something in animator
+        } else if(isSunAtMin()){
 			// Continue
 			if (lanesSpeed < maxLanesSpeed) { // accelerate when do not collide
 				if (lanesSpeed + rushLanesSpeed * Time.deltaTime >= maxLanesSpeed)

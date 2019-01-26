@@ -105,17 +105,21 @@ public class LanesController : MonoBehaviour {
 		frameCounter += Time.deltaTime;
 		bgSpeed = GetLanesSpeed();
 		isGameOver = GetIsGameOver();
-		if (!isGameOver) {
-			if (frameCounter >= spawnPeriod) {
-				RandomInstantiateObstacle();
-				if (spawnPeriod > minSpawnPeriod) {
-					spawnPeriod -= 0.1f;
-				}	
-				frameCounter = 0;
-			}
-			MoveBackground();
-			DetectBackground();
-		}
+        MoveBackground();
+        if (!isGameOver)
+        {
+            if (frameCounter >= spawnPeriod)
+            {
+                RandomInstantiateObstacle();
+                if (spawnPeriod > minSpawnPeriod)
+                {
+                    spawnPeriod -= 0.1f;
+                }
+                frameCounter = 0;
+            }
+            //MoveBackground();
+            DetectBackground();
+        }
 		
 	}
 

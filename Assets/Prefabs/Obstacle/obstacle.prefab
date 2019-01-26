@@ -27,7 +27,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1646730548610654
 GameObject:
   m_ObjectHideFlags: 0
@@ -38,8 +38,8 @@ GameObject:
   - component: {fileID: 4519233788396686}
   - component: {fileID: 212326164474261064}
   - component: {fileID: 114166687627144504}
-  - component: {fileID: 114635818153085694}
   - component: {fileID: 61003109363737882}
+  - component: {fileID: 114635818153085694}
   m_Layer: 0
   m_Name: obstacle
   m_TagString: Obstacle
@@ -56,7 +56,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4865355462437220}
   - component: {fileID: 212204141022503710}
-  - component: {fileID: 114084313070148186}
   m_Layer: 0
   m_Name: pole
   m_TagString: Untagged
@@ -117,30 +116,19 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.5}
+  m_Offset: {x: 0.01, y: 0.405}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0.14583334, z: 0, w: 0.2916667}
     pivot: {x: 0.5, y: 0}
     oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 0.5}
     adaptiveTilingThreshold: 0.5
     drawMode: 1
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.2, y: 0.15}
   m_EdgeRadius: 0
---- !u!114 &114084313070148186
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1998191863777444}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 915976aef4d1fb947977d77cc6dcd0de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114166687627144504
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -166,6 +154,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPos: 0
   lane: 0
+  pole: {fileID: 1998191863777444}
+  extra: {fileID: 1345515905239206}
 --- !u!212 &212141736949820208
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -200,8 +190,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
-  m_Sprite: {fileID: 21300040, guid: 5ccb48eb571c2aa46810509d8fd812f9, type: 3}
+  m_SortingOrder: -5
+  m_Sprite: {fileID: 21300028, guid: 5ccb48eb571c2aa46810509d8fd812f9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -246,13 +236,13 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: 9a9b100ec1f1a5e4b98281f67c078ebf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -292,13 +282,13 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -2
+  m_SortingOrder: -10
   m_Sprite: {fileID: 21300000, guid: 83200a59ab0a26b44959195780b235e8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -339,7 +329,7 @@ SpriteMask:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300040, guid: 5ccb48eb571c2aa46810509d8fd812f9, type: 3}
+  m_Sprite: {fileID: 21300028, guid: 5ccb48eb571c2aa46810509d8fd812f9, type: 3}
   m_MaskAlphaCutoff: 0.2
   m_FrontSortingLayerID: 0
   m_BackSortingLayerID: 0
