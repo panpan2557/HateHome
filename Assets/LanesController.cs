@@ -6,6 +6,7 @@ public class LanesController : MonoBehaviour {
 	public GameObject bgPrefab;
 	public GameObject detectPoint;
 	public Sprite[] terrains;
+    public GameObject[] obstacles;
 	TerrainLinkedList t1, t2;
 	TerrainLinkedList currentTerrain;
 	List<GameObject> bgs = new List<GameObject>();
@@ -13,9 +14,13 @@ public class LanesController : MonoBehaviour {
 	public int numberOfBgs;
 	public int numOfRemovedBgs;
 	public int numChangeTerrain = 10;
-	void Start () {
-		// init terrain linked list
-		t1 = new TerrainLinkedList(terrains[0]);
+    public int spawnRate = 6;
+    private GameObject[] laneObjects;
+
+    void Start () {
+        laneObjects = GameController.instance.lanes;
+        // init terrain linked list
+        t1 = new TerrainLinkedList(terrains[0]);
 		t2 = new TerrainLinkedList(terrains[1]);
 		t1.setNext(t2);
 		t2.setNext(t1);
@@ -29,10 +34,14 @@ public class LanesController : MonoBehaviour {
 			newPos.x += bg.GetComponent<SpriteRenderer>().bounds.size.x * i; 
 			bg.transform.position = newPos;
 			bg.GetComponent<SpriteRenderer>().sprite = currentTerrain.t;
-			bgs.Add(bg);
+            RandomInstantiateObstacle(bg);
+
+            bgs.Add(bg);
 		}
 		currentTerrain = currentTerrain.next();
-	}
+        //laneObjects = GameController.instance.lanes;
+        Debug.Log("starttt    "+laneObjects.Length);
+    }
 	
 	public void MoveBackground() {
 		foreach (GameObject bg in bgs) {
@@ -67,7 +76,9 @@ public class LanesController : MonoBehaviour {
 
 	void SwapBackground() {
 		GameObject firstBg = bgs[0];
-		bgs.RemoveAt(0);
+        ClearRandomObstacle(firstBg);
+        RandomInstantiateObstacle(firstBg);
+        bgs.RemoveAt(0);
 		bgs.Add(firstBg);
 	}
 
@@ -76,4 +87,26 @@ public class LanesController : MonoBehaviour {
 		MoveBackground();
 		DetectBackground();
 	}
+
+    void RandomInstantiateObstacle(GameObject terrain) {
+        int randAmount = Random.Range(spawnRate - 5, spawnRate + 5);
+        for (int i = 0; i < randAmount; i++) {
+            GameObject obstacle = Instantiate(obstacles[Random.Range(0, obstacles.Length)]);
+            int randPosX = Random.Range(-128, 128);
+            int randLane = Random.Range(0, laneObjects.Length);
+            obstacle.transform.parent = terrain.transform;
+            Vector3 obsPosition = Vector3.zero;
+            obsPosition.x = randPosX/10f;
+            obsPosition.y = laneObjects[randLane].transform.position.y - terrain.transform.position.y+ obstacle.GetComponent<SpriteRenderer>().bounds.size.y / 2;
+            obsPosition.z = -1;
+            obstacle.transform.localPosition = obsPosition;
+        }
+        spawnRate++;
+    }
+
+    void ClearRandomObstacle(GameObject terrain) {
+        foreach (Transform t in terrain.transform) {
+            Destroy(t.gameObject);
+        }
+    }
 }

@@ -5,9 +5,10 @@ using UnityEngine;
 public class GameController : MonoBehaviour {
 
 	public GameObject[] lanes;
+    public GameObject[] obstacles;
 	
 	public static GameController instance;
-	void Start () {
+	void Awake () {
 		instance = this;
 	}
 	void Update () {
