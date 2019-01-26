@@ -152,6 +152,31 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+    public void PrintDirection(string direction) {
+        Debug.LogError(direction);
+        if (!isJumping)
+        {
+            if (direction.Contains("Up"))
+            {
+                this.currentLane -= 1;
+                if (this.currentLane < lanes.lane1)
+                {
+                    this.currentLane = lanes.lane1;
+                }
+                SwitchLanes(currentLane);
+            }
+            else if (direction.Contains("Down"))
+            {
+                this.currentLane += 1;
+                if (this.currentLane > lanes.lane3)
+                {
+                    this.currentLane = lanes.lane3;
+                }
+                SwitchLanes(currentLane);
+            }
+        }  
+    }
+
     public void SpawnMom() {
         mom = Instantiate(momPrefab);
         Vector3 newPos = this.transform.position;
