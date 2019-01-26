@@ -14,10 +14,10 @@ public class LanesController : MonoBehaviour {
 	public int numberOfBgs;
 	public int numOfRemovedBgs;
 	public int numChangeTerrain = 10;
-    public int spawnRate = 6;
-	public int frameCounter = 0;
+	public float frameCounter = 0f;
 	public float doubleSpawnChance = 0f;
-	public int spawnAtFrame = 120;
+	public float spawnPeriod = 6f;
+	public float minSpawnPeriod = 0.5f;
 	public float overlapOffset = 1f;
 	public GameObject spawnPoint;
     private GameObject[] laneObjects;
@@ -92,12 +92,12 @@ public class LanesController : MonoBehaviour {
 	}
 
 	void Update () {
-		frameCounter++;
+		frameCounter += Time.deltaTime;
 		bgSpeed = GetLanesSpeed();
-		if (frameCounter % spawnAtFrame == 0) {
+		if (frameCounter >= spawnPeriod) {
 			RandomInstantiateObstacle();
-			if (spawnAtFrame > 30) {
-				spawnAtFrame -= 1;
+			if (spawnPeriod > minSpawnPeriod) {
+				spawnPeriod -= 0.1f;
 			}	
 			frameCounter = 0;
 		}
@@ -128,7 +128,7 @@ public class LanesController : MonoBehaviour {
 			int randLane = Random.Range(0, laneObjects.Length);
 			Spawn(randLane);
 		}
-		doubleSpawnChance += 0.003f;
+		doubleSpawnChance += 0.01f;
     }
 
 	float randHeight(float min, float max) {

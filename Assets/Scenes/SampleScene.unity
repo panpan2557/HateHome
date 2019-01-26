@@ -377,6 +377,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1957877044874622, guid: 5a67a0ea755014f5b8c7da6c630f5bc0, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a67a0ea755014f5b8c7da6c630f5bc0, type: 2}
   m_IsPrefabAsset: 0
@@ -436,10 +440,10 @@ MonoBehaviour:
   numberOfBgs: 4
   numOfRemovedBgs: 0
   numChangeTerrain: 10
-  spawnRate: 0
   frameCounter: 0
   doubleSpawnChance: 0
-  spawnAtFrame: 120
+  spawnPeriod: 2.5
+  minSpawnPeriod: 0.5
   overlapOffset: 1
   spawnPoint: {fileID: 1873999885}
 --- !u!1 &1054194571
@@ -498,56 +502,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3, y: 0.01}
   m_EdgeRadius: 0
---- !u!1001 &1233981364
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4094144708969380, guid: af8f6ea3e32b7e24ba5cde09ea74a02b, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -5.553278
-      objectReference: {fileID: 0}
-    - target: {fileID: 4094144708969380, guid: af8f6ea3e32b7e24ba5cde09ea74a02b, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -0.8743335
-      objectReference: {fileID: 0}
-    - target: {fileID: 4094144708969380, guid: af8f6ea3e32b7e24ba5cde09ea74a02b, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4094144708969380, guid: af8f6ea3e32b7e24ba5cde09ea74a02b, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4094144708969380, guid: af8f6ea3e32b7e24ba5cde09ea74a02b, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4094144708969380, guid: af8f6ea3e32b7e24ba5cde09ea74a02b, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4094144708969380, guid: af8f6ea3e32b7e24ba5cde09ea74a02b, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4094144708969380, guid: af8f6ea3e32b7e24ba5cde09ea74a02b, type: 2}
-      propertyPath: m_RootOrder
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 1570594578913834, guid: af8f6ea3e32b7e24ba5cde09ea74a02b, type: 2}
-      propertyPath: m_Name
-      value: Fence1 (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 1570594578913834, guid: af8f6ea3e32b7e24ba5cde09ea74a02b, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: af8f6ea3e32b7e24ba5cde09ea74a02b, type: 2}
-  m_IsPrefabAsset: 0
 --- !u!1 &1372223179
 GameObject:
   m_ObjectHideFlags: 0
@@ -581,15 +535,15 @@ MonoBehaviour:
   - {fileID: 642666481}
   obstacles: []
   sun: {fileID: 1625585831}
-  maxLanesSpeed: 3
+  maxLanesSpeed: 6
   lanesSpeed: 0
-  rushLanesSpeed: 1
+  rushLanesSpeed: 2
   currentSunHeight: 0
   maxSunHeight: 3.3
   minSunHeight: -1.75
   maxSunsetSpeed: 0.5
   sunsetSpeed: 0
-  collideSpeedPenalty: 2
+  collideSpeedPenalty: 3.5
 --- !u!4 &1372223181
 Transform:
   m_ObjectHideFlags: 0
@@ -671,7 +625,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4061880514620302, guid: c219cdd6cadcbae46a1db92cc1ad6440, type: 2}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c219cdd6cadcbae46a1db92cc1ad6440, type: 2}
@@ -785,9 +739,9 @@ MonoBehaviour:
   currentLane: 1
   jumpTimeCount: 0
   jumpTimeLimit: 0.25
-  jumpForce: 200
+  jumpForce: 370
   isJumping: 0
-  timeToReachTarget: 0.25
+  timeToReachTarget: 0.15
   directionChosen: 0
   animator: {fileID: 1761150813}
 --- !u!212 &1761150809
@@ -863,7 +817,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
