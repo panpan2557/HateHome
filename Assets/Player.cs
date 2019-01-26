@@ -23,13 +23,20 @@ public class Player : MonoBehaviour {
     private Vector2 direction;
     public bool directionChosen;
     private Vector3 mouseOrigin;    // Position of cursor when mouse dragging starts
+    private Vector3 mouseEnd;
     private bool isPanning;
     private SpriteRenderer spriteRenderer;
 
     public Animator animator;
+    private bool isMomExist;
+    public GameObject momPrefab;
+    public GameObject endingWord;
+    public GameObject replayButton;
+    private GameObject mom;
 
 	void Start () {
 		rigid = this.GetComponent<Rigidbody2D>();
+        isMomExist = false;
         //timeToReachTarget = 0.5f;
         //isOnPlane = false;
         laneObjects = GameController.instance.lanes;
@@ -144,19 +151,37 @@ public class Player : MonoBehaviour {
 			}
 		}
 	}
+
+    public void SpawnMom() {
+        mom = Instantiate(momPrefab);
+        Vector3 newPos = this.transform.position;
+        //newPos.y -= -3.33f;
+        newPos.x += 15f;
+        mom.transform.position = newPos;
+    }
+
+    public void DestroyMom() {
+        Destroy(mom);
+        endingWord.SetActive(true);
+        replayButton.SetActive(true);
+    }
 	
 	void Update () {
-        if (isSwitchPlane && !isJumping) {
-            time += Time.deltaTime / timeToReachTarget;
-            transform.position = Vector3.Lerp(startPosition, target, time);
-            if (Vector3.Distance(transform.position, target) < 0.01) {
-                isSwitchPlane = false;
+        if (!GameController.instance.isGameOver)
+        {
+            if (isSwitchPlane && !isJumping)
+            {
+                time += Time.deltaTime / timeToReachTarget;
+                transform.position = Vector3.Lerp(startPosition, target, time);
+                if (Vector3.Distance(transform.position, target) < 0.01)
+                {
+                    isSwitchPlane = false;
+                }
             }
+
+            CheckJump();
+            CheckSwitchLane();
         }
-
-        CheckJump();
-        CheckSwitchLane();
-
         //// Track a single touch as a direction control.
         //if (Input.touchCount > 0)
         //{
@@ -190,24 +215,21 @@ public class Player : MonoBehaviour {
         //if (Input.GetMouseButtonDown(0))
         //{
         //    mouseOrigin = Input.mousePosition;
+        //    Debug.Log(mouseOrigin);
         //    isPanning = true;
         //}
 
-        //if (!Input.GetMouseButton(0))
+        //if (!Input.GetMouseButton(0)) {
         //    isPanning = false;
+        //}
 
         //if (isPanning)
         //{
         //    Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - mouseOrigin);
 
 
-        //    Vector3 move = new Vector3(pos.x, 0, 0);
-        //    transform.Translate(move * panSpeed * Time.deltaTime, Space.Self);
-
-        //    Vector3 clampedPosition = transform.position;
-        //    clampedPosition.x = Mathf.Clamp(transform.position.x, leftValue, rightValue);
-        //    clampedPosition.z = Mathf.Clamp(transform.position.z, zStabilizer, zStabilizer);
-        //    transform.position = clampedPosition;
+        //    Vector3 move = new Vector3(pos.x, pos.y, 0);
+        //    Debug.LogError(move);
 
         //}
 

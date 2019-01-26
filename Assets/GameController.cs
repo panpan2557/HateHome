@@ -13,8 +13,11 @@ public class GameController : MonoBehaviour {
     public float revertSunsetSpeed = 2f;
 	public float currentSunHeight, maxSunHeight, minSunHeight, maxSunsetSpeed, sunsetSpeed;
 	public float collideSpeedPenalty = 2f;
+    public float endingSpeed = 10f;
 	public bool isGameOver;
 	public static GameController instance;
+    private float time;
+    private float distanceCounter;
 
     public List<GameObject> buildings;
     public List<GameObject> skys;
@@ -25,30 +28,79 @@ public class GameController : MonoBehaviour {
 	void Start() {
         maxSunHeight = this.sun.GetComponent<SunSystemInfo>().sun.transform.eulerAngles.z;
         currentSunHeight = maxSunHeight;
+        //currentSunHeight = minSunHeight;
         buildings = this.sun.GetComponent<SunSystemInfo>().buildings;
         skys = this.sun.GetComponent<SunSystemInfo>().skys;
+        time = 3;
+        distanceCounter = 0;
     }
 	void Update () {
         Debug.Log(currentSunHeight + "/" + minSunHeight + " : " + isSunAtMin());
 		if (isSunAtMin()) {
 			// Gameover
 			Debug.Log("Gameover!");
-			isGameOver = true;
+            isGameOver = true;
             
             // Destroy all obstacles
             GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
 			foreach (GameObject o in obstacles) {
-				Destroy(o);
+                //Destroy(o);
+                o.GetComponent<BoxCollider2D>().enabled = false;
 			}
+            if (time == 0)
+            {
+                GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().SetInteger("status", 3);
+                // Stop lanes, obstacle generation
+                if (lanesSpeed > 0)
+                {
+                    Debug.LogError(lanesSpeed + "/" + endingSpeed * Time.deltaTime);
+                    lanesSpeed -= endingSpeed * Time.deltaTime;
+                }
+                else
+                {
+                    lanesSpeed = 0;
+                    //GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().DestroyMom();
+                }
 
-            GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().SetInteger("status", 3);
-            // Stop lanes, obstacle generation
-            /*lanesSpeed = 0f;
-            this.sun.GetComponent<SunSystemInfo>().skysSpeed = 0;
-            this.sun.GetComponent<SunSystemInfo>().buildingsSpeed = 0;*/
+                if (this.sun.GetComponent<SunSystemInfo>().skysSpeed > 0)
+                {
+                    //Debug.LogError(this.sun.GetComponent<SunSystemInfo>().skysSpeed);
+                    this.sun.GetComponent<SunSystemInfo>().skysSpeed -= endingSpeed * Time.deltaTime;
+                }
+                else
+                {
+                    this.sun.GetComponent<SunSystemInfo>().skysSpeed = 0;
+                }
+
+                if (this.sun.GetComponent<SunSystemInfo>().buildingsSpeed > 0)
+                {
+                    //Debug.LogError(this.sun.GetComponent<SunSystemInfo>().buildingsSpeed);
+                    this.sun.GetComponent<SunSystemInfo>().buildingsSpeed -= endingSpeed * Time.deltaTime;
+                }
+                else
+                {
+                    this.sun.GetComponent<SunSystemInfo>().buildingsSpeed = 0;
+                }
+            }
+            else {
+                if (lanesSpeed < maxLanesSpeed)
+                { // accelerate when do not collide
+                    if (lanesSpeed + rushLanesSpeed * Time.deltaTime >= maxLanesSpeed)
+                    {
+                        time = 0;
+                        lanesSpeed = maxLanesSpeed;
+                    }
+                    else {
+                        lanesSpeed += rushLanesSpeed * Time.deltaTime;
+                    }
+                }
+            }
+            
+
             // Prepare for End Scene
             // - Trigger something in animator
-        } else if(isSunAtMin()){
+        } else{
+            //distanceCounter = lanesSpeed * Time.deltaTime;
 			// Continue
 			if (lanesSpeed < maxLanesSpeed) { // accelerate when do not collide
 				if (lanesSpeed + rushLanesSpeed * Time.deltaTime >= maxLanesSpeed)
@@ -56,6 +108,8 @@ public class GameController : MonoBehaviour {
 				else
 					lanesSpeed += rushLanesSpeed * Time.deltaTime;
 			}
+
+
 
 			float calSpeed = this.sunsetSpeed;
 			if (maxLanesSpeed - lanesSpeed != 0) { // slower than max lanes speed
@@ -76,7 +130,13 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void CollideWithObstacle() {
-		this.lanesSpeed -= collideSpeedPenalty;
+        if (this.lanesSpeed - collideSpeedPenalty <= 0)
+        {
+            this.lanesSpeed = 0;
+        }
+        else {
+            this.lanesSpeed -= collideSpeedPenalty;
+        }
 	}
 
 	void SunSetting() {
