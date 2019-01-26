@@ -154,27 +154,30 @@ public class Player : MonoBehaviour {
 
     public void PrintDirection(string direction) {
         Debug.LogError(direction);
-        if (!isJumping)
+        if (!GameController.instance.isGameOver)
         {
-            if (direction.Contains("Up"))
+            if (!isJumping)
             {
-                this.currentLane -= 1;
-                if (this.currentLane < lanes.lane1)
+                if (direction.Contains("Up"))
                 {
-                    this.currentLane = lanes.lane1;
+                    this.currentLane -= 1;
+                    if (this.currentLane < lanes.lane1)
+                    {
+                        this.currentLane = lanes.lane1;
+                    }
+                    SwitchLanes(currentLane);
                 }
-                SwitchLanes(currentLane);
-            }
-            else if (direction.Contains("Down"))
-            {
-                this.currentLane += 1;
-                if (this.currentLane > lanes.lane3)
+                else if (direction.Contains("Down"))
                 {
-                    this.currentLane = lanes.lane3;
+                    this.currentLane += 1;
+                    if (this.currentLane > lanes.lane3)
+                    {
+                        this.currentLane = lanes.lane3;
+                    }
+                    SwitchLanes(currentLane);
                 }
-                SwitchLanes(currentLane);
             }
-        }  
+        } 
     }
 
     public void SpawnMom() {
