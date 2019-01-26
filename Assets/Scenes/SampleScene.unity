@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37312013, g: 0.3807403, b: 0.35872707, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 642666483}
   m_Layer: 0
   m_Name: Lane3
-  m_TagString: Untagged
+  m_TagString: Lane
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -220,7 +220,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 642666481}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.13, y: -4.39, z: 10}
+  m_LocalPosition: {x: -8.13, y: -4.58, z: 10}
   m_LocalScale: {x: 1, y: 0.712, z: 1}
   m_Children: []
   m_Father: {fileID: 1548400056}
@@ -292,7 +292,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1957877044874622, guid: 5a67a0ea755014f5b8c7da6c630f5bc0, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a67a0ea755014f5b8c7da6c630f5bc0, type: 2}
@@ -322,7 +322,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1016917118}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.13, y: -1.97, z: 0}
+  m_LocalPosition: {x: -0.79, y: -2.66, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 589445115}
@@ -345,10 +345,14 @@ MonoBehaviour:
   terrains:
   - {fileID: 21300000, guid: b5202f6e58cbf4c96943fbc2f79ee8b6, type: 3}
   - {fileID: 21300000, guid: 4db495bc185064ea2808aa76f5b0f239, type: 3}
+  obstacles:
+  - {fileID: 1719638985817082, guid: 998d1606b239c7e4abe23da0b01566f0, type: 2}
+  - {fileID: 1415514332690312, guid: c70d65b445ef0d846ad5bfc09ad434b0, type: 2}
   bgSpeed: 7
   numberOfBgs: 4
   numOfRemovedBgs: 0
   numChangeTerrain: 10
+  spawnRate: 0
 --- !u!1 &1054194571
 GameObject:
   m_ObjectHideFlags: 0
@@ -361,7 +365,7 @@ GameObject:
   - component: {fileID: 1054194573}
   m_Layer: 0
   m_Name: Lane2
-  m_TagString: Untagged
+  m_TagString: Lane
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -374,7 +378,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1054194571}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.13, y: -2.95, z: 10}
+  m_LocalPosition: {x: -8.13, y: -3.68, z: 10}
   m_LocalScale: {x: 1, y: 0.712, z: 1}
   m_Children: []
   m_Father: {fileID: 1548400056}
@@ -436,6 +440,14 @@ MonoBehaviour:
   - {fileID: 1778866418}
   - {fileID: 1054194571}
   - {fileID: 642666481}
+  obstacles: []
+  sun: {fileID: 0}
+  maxLanesSpeed: 7
+  lanesSpeed: 0
+  currentSunHeight: 0
+  maxSunHeight: 7.42
+  minSunHeight: -0.25
+  sunsetSpeed: 0.5
 --- !u!4 &1372223181
 Transform:
   m_ObjectHideFlags: 0
@@ -492,6 +504,7 @@ GameObject:
   - component: {fileID: 1761150808}
   - component: {fileID: 1761150811}
   - component: {fileID: 1761150812}
+  - component: {fileID: 1761150813}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -511,9 +524,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentLane: 2
-  maxJumpHeight: 400
-  jumpSpeed: 2
-  currentJumpTime: 0
+  jumpTimeCount: 0
+  jumpTimeLimit: 0.25
+  jumpForce: 200
   isJumping: 0
 --- !u!212 &1761150809
 SpriteRenderer:
@@ -550,8 +563,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c72d63230f7d64584a89661eede02557, type: 3}
-  m_Color: {r: 0.7075472, g: 0.056737285, b: 0.056737285, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 5ccb48eb571c2aa46810509d8fd812f9, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -569,7 +582,7 @@ Transform:
   m_GameObject: {fileID: 1761150807}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.89, y: -1.59, z: -1}
-  m_LocalScale: {x: 0.349, y: 0.349, z: 0.349}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -606,19 +619,37 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.47684425}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5, y: 5}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 0.2, y: 0.2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5, y: 5}
+  m_Size: {x: 1, y: 1.1430541}
   m_EdgeRadius: 0
+--- !u!95 &1761150813
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1761150807}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2421385d18542ad44adc2d93cbc16208, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1778866418
 GameObject:
   m_ObjectHideFlags: 0
@@ -631,7 +662,7 @@ GameObject:
   - component: {fileID: 1778866420}
   m_Layer: 0
   m_Name: Lane1
-  m_TagString: Untagged
+  m_TagString: Lane
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -644,7 +675,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1778866418}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.13, y: -1.67, z: 10}
+  m_LocalPosition: {x: -8.13, y: -2.81, z: 10}
   m_LocalScale: {x: 1, y: 0.712, z: 1}
   m_Children: []
   m_Father: {fileID: 1548400056}

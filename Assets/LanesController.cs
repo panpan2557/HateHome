@@ -20,8 +20,6 @@ public class LanesController : MonoBehaviour {
     void Start () {
         laneObjects = GameController.instance.lanes;
         // init terrain linked list
-        t1 = new TerrainLinkedList(terrains[0]);
-	void Start () {
 		bgSpeed = GameController.instance.lanesSpeed; // get lanes speed from the controller
 		// init terrain linked list
 		t1 = new TerrainLinkedList(terrains[0]);
