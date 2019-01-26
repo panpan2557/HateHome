@@ -133,6 +133,10 @@ public class LanesController : MonoBehaviour {
 
 	void Spawn(int randLane, bool isDoubleSpawned = false) {
 		GameObject obstacle = Instantiate(obstacles[0]);
+		// set obstacle's height ranges from [0.5, 1.6]
+		float randHeight = Random.Range(0.5f, 1.6f);
+		obstacle.GetComponent<Obstacle>().SetHeight(randHeight);
+		// record lane index i
 		obstacle.GetComponent<ObstacleInfo>().lane = randLane;
 		float randPosX = spawnPoint.transform.position.x;
 		Vector3 obsPosition = Vector3.zero;
