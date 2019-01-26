@@ -9,7 +9,9 @@ public class GameController : MonoBehaviour {
 	public GameObject sun;
 	public float maxLanesSpeed;
 	public float lanesSpeed;
-	public float currentSunHeight, maxSunHeight, minSunHeight, sunsetSpeed;
+	public float rushLanesSpeed = 1f;
+	public float currentSunHeight, maxSunHeight, minSunHeight, maxSunsetSpeed, sunsetSpeed;
+	public float collideSpeedPenalty = 2f;
 	public static GameController instance;
 	void Awake () {
 		instance = this;
@@ -24,11 +26,33 @@ public class GameController : MonoBehaviour {
 			Debug.Log("Gameover!");
 		} else {
 			// Continue
-			// alter the sunset speed
-			float calSpeed = sunsetSpeed;
-			// if (lane)
+			if (lanesSpeed < maxLanesSpeed) { // accelerate when do not collide
+				if (lanesSpeed + rushLanesSpeed * Time.deltaTime >= maxLanesSpeed)
+					lanesSpeed = maxLanesSpeed;
+				else
+					lanesSpeed += rushLanesSpeed * Time.deltaTime;
+			}
+
+			float calSpeed = this.sunsetSpeed;
+			if (maxLanesSpeed - lanesSpeed != 0) { // slower than max lanes speed
+				if (calSpeed + 0.3f * Time.deltaTime >= maxSunsetSpeed) 
+					calSpeed = maxSunsetSpeed;
+				else
+					calSpeed += 0.3f * Time.deltaTime;
+			} else if (maxLanesSpeed - lanesSpeed == 0) { // catch up the max speed
+				if (currentSunHeight + calSpeed * Time.deltaTime >= maxSunHeight) {
+					calSpeed = 0;
+					currentSunHeight = maxSunHeight;
+				} else
+					calSpeed -= 0.3f * Time.deltaTime; 
+			}
+			this.sunsetSpeed = calSpeed;
 			SunSetting();
 		}
+	}
+
+	public void CollideWithObstacle() {
+		this.lanesSpeed -= collideSpeedPenalty;
 	}
 
 	void SunSetting() {

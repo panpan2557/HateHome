@@ -122,6 +122,14 @@ public class Player : MonoBehaviour {
             animator.SetInteger("status", 0);
         }
     }
+
+	void OnTriggerEnter2D(Collider2D col) {
+		if (col.gameObject.tag == "Obstacle") {
+			if (col.gameObject.GetComponent<ObstacleInfo>().lane == (int)currentLane) {
+				GameController.instance.CollideWithObstacle();
+			}
+		}
+	}
 	
 	void Update () {
         if (isSwitchPlane && !isJumping) {
