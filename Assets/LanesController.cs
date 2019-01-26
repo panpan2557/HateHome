@@ -21,6 +21,11 @@ public class LanesController : MonoBehaviour {
 	public float overlapOffset = 1f;
 	public GameObject spawnPoint;
     private GameObject[] laneObjects;
+	private bool isGameOver;
+	public static LanesController instance;
+	void Awake () {
+		instance = this;
+	}
 
     void Start () {
         Vector2 bgSize = bgPrefab.GetComponent<SpriteRenderer>().bounds.size;
@@ -53,6 +58,10 @@ public class LanesController : MonoBehaviour {
 	float GetLanesSpeed() {
 		return GameController.instance.lanesSpeed; // get lanes speed from the controller
 	}	
+	bool GetIsGameOver() {
+		return GameController.instance.isGameOver; // get lanes speed from the controller
+	}	
+
 	public void MoveBackground() {
 		foreach (GameObject bg in bgs) {
 			Vector3 pos = bg.transform.position;
@@ -94,15 +103,19 @@ public class LanesController : MonoBehaviour {
 	void Update () {
 		frameCounter += Time.deltaTime;
 		bgSpeed = GetLanesSpeed();
-		if (frameCounter >= spawnPeriod) {
-			RandomInstantiateObstacle();
-			if (spawnPeriod > minSpawnPeriod) {
-				spawnPeriod -= 0.1f;
-			}	
-			frameCounter = 0;
+		isGameOver = GetIsGameOver();
+		if (!isGameOver) {
+			if (frameCounter >= spawnPeriod) {
+				RandomInstantiateObstacle();
+				if (spawnPeriod > minSpawnPeriod) {
+					spawnPeriod -= 0.1f;
+				}	
+				frameCounter = 0;
+			}
+			MoveBackground();
+			DetectBackground();
 		}
-		MoveBackground();
-		DetectBackground();
+		
 	}
 
 	void RandomInstantiateObstacle() {

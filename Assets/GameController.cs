@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour {
 	public float rushLanesSpeed = 1f;
 	public float currentSunHeight, maxSunHeight, minSunHeight, maxSunsetSpeed, sunsetSpeed;
 	public float collideSpeedPenalty = 2f;
+	public bool isGameOver;
 	public static GameController instance;
 	void Awake () {
 		instance = this;
@@ -24,6 +25,16 @@ public class GameController : MonoBehaviour {
 		if (isSunAtMin()) {
 			// Gameover
 			Debug.Log("Gameover!");
+			isGameOver = true;
+			// Stop lanes, obstacle generation
+			lanesSpeed = 0f;
+			// Destroy all obstacles
+			GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
+			foreach (GameObject o in obstacles) {
+				Destroy(o);
+			}
+			// Prepare for End Scene
+			// - Trigger something in animator
 		} else {
 			// Continue
 			if (lanesSpeed < maxLanesSpeed) { // accelerate when do not collide

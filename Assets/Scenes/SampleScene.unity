@@ -543,7 +543,8 @@ MonoBehaviour:
   minSunHeight: -1.75
   maxSunsetSpeed: 0.5
   sunsetSpeed: 0
-  collideSpeedPenalty: 3.5
+  collideSpeedPenalty: 4
+  isGameOver: 0
 --- !u!4 &1372223181
 Transform:
   m_ObjectHideFlags: 0
