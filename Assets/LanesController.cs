@@ -91,7 +91,7 @@ public class LanesController : MonoBehaviour {
 		bgs.Add(firstBg);
 	}
 
-	void FixedUpdate () {
+	void Update () {
 		frameCounter++;
 		bgSpeed = GetLanesSpeed();
 		if (frameCounter % spawnAtFrame == 0) {
@@ -131,11 +131,17 @@ public class LanesController : MonoBehaviour {
 		doubleSpawnChance += 0.003f;
     }
 
+	float randHeight(float min, float max) {
+		float r = Random.Range(0f, 1f);
+		r = Mathf.Pow(r, 3f);
+		return min + (max - min) * r;
+	}
+
 	void Spawn(int randLane, bool isDoubleSpawned = false) {
 		GameObject obstacle = Instantiate(obstacles[0]);
 		// set obstacle's height ranges from [0.5, 1.6]
-		float randHeight = Random.Range(0.5f, 1.6f);
-		obstacle.GetComponent<Obstacle>().SetHeight(randHeight);
+		float rh = randHeight(0.5f, 1.6f);
+		obstacle.GetComponent<Obstacle>().SetHeight(rh);
 		// record lane index i
 		obstacle.GetComponent<ObstacleInfo>().lane = randLane;
 		float randPosX = spawnPoint.transform.position.x;

@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4492401118748946}
   - component: {fileID: 212642397834627112}
-  - component: {fileID: 114890778798868912}
   m_Layer: 0
   m_Name: pole
   m_TagString: Untagged
@@ -155,17 +154,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPos: 0
   lane: 0
---- !u!114 &114890778798868912
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1126411719638796}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 915976aef4d1fb947977d77cc6dcd0de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &212439863262389092
 SpriteRenderer:
   m_ObjectHideFlags: 1
