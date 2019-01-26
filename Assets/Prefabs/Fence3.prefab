@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4831785299967438}
   - component: {fileID: 212333022038831238}
   - component: {fileID: 61062627035587040}
+  - component: {fileID: 114451623040753332}
   m_Layer: 0
   m_Name: Fence3
   m_TagString: Untagged
@@ -66,6 +67,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.2305949, y: 2.0752842}
   m_EdgeRadius: 0
+--- !u!114 &114451623040753332
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1240967683947806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f833e4780627d4abda52b4ea2d670dd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lanesSpeed: 0
 --- !u!212 &212333022038831238
 SpriteRenderer:
   m_ObjectHideFlags: 1
