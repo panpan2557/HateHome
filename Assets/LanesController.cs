@@ -21,7 +21,7 @@ public class LanesController : MonoBehaviour {
         Vector2 bgSize = bgPrefab.GetComponent<SpriteRenderer>().bounds.size;
         
         laneObjects = GameController.instance.lanes;
-        Debug.Log(bgSize.y);
+        Debug.Log(bgSize);
         //for (int i =0; i < laneObjects.Length; i++) {
         //    Vector3 v = laneObjects[i].transform.position;
         //    v.y = bgSize.y / 3 * i;
@@ -41,9 +41,11 @@ public class LanesController : MonoBehaviour {
 			bg = Instantiate(bgPrefab);
 			bg.transform.parent = this.transform;
 			Vector3 newPos = this.transform.position;
-			newPos.x += bg.GetComponent<SpriteRenderer>().bounds.size.x * i; 
+			newPos.x += bg.GetComponent<SpriteRenderer>().bounds.size.x * i;
+            //newPos.z = 1;
 			bg.transform.position = newPos;
-			bg.GetComponent<SpriteRenderer>().sprite = currentTerrain.t;
+
+            bg.GetComponent<SpriteRenderer>().sprite = currentTerrain.t;
             RandomInstantiateObstacle(bg);
 
             bgs.Add(bg);

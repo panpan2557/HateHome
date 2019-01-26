@@ -14,11 +14,19 @@ public class Player : MonoBehaviour {
 	private GameObject[] laneObjects;
 	private Rigidbody2D rigid;
 
+    private bool isOnPlane;
+    private float time;
+    public float timeToReachTarget;
+    private Vector2 startPosition;
+    private Vector2 target;
+
     public Animator animator;
 
 	void Start () {
 		rigid = this.GetComponent<Rigidbody2D>();
-		laneObjects = GameController.instance.lanes;
+        //timeToReachTarget = 0.5f;
+        //isOnPlane = false;
+        laneObjects = GameController.instance.lanes;
 		SwitchLanes(currentLane); // init and trigger lanes
 		triggerColliders(currentLane);
 	}
@@ -26,8 +34,11 @@ public class Player : MonoBehaviour {
 	public void SwitchLanes(lanes l) {
 		Vector3 lanePos = laneObjects[(int)l].transform.position;
 		lanePos.z = -1; // fixed z-axis: always front
-		lanePos.y += this.GetComponent<SpriteRenderer>().bounds.size.y / 2;
-		this.transform.position = lanePos;
+                        //lanePos.y += this.GetComponent<SpriteRenderer>().bounds.size.y / 2;
+                        //this.transform.position = lanePos;
+        time = 0;
+        startPosition = this.transform.position;
+        target = lanePos;
 		// turn off others lane's collider
 		triggerColliders(l);
 	}
@@ -102,7 +113,10 @@ public class Player : MonoBehaviour {
     }
 	
 	void Update () {
-		CheckSwitchLane();
-		CheckJump();
+        time += Time.deltaTime / timeToReachTarget;
+        transform.position = Vector3.Lerp(startPosition, target, time);
+
+        CheckSwitchLane();
+		//CheckJump();
 	}
 }
