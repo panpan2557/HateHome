@@ -24,6 +24,7 @@ public class Player : MonoBehaviour {
     public bool directionChosen;
     private Vector3 mouseOrigin;    // Position of cursor when mouse dragging starts
     private bool isPanning;
+    private SpriteRenderer spriteRenderer;
 
     public Animator animator;
 

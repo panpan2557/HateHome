@@ -618,6 +618,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1957877044874622, guid: 5a67a0ea755014f5b8c7da6c630f5bc0, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a67a0ea755014f5b8c7da6c630f5bc0, type: 2}
   m_IsPrefabAsset: 0
@@ -670,17 +674,17 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 861d9b34d79ad774ba3baf8c09ed3f84, type: 3}
   - {fileID: 21300000, guid: c79784701216e8b46a847d9379f52240, type: 3}
   obstacles:
-  - {fileID: 1646730548610654, guid: e7aa41134a8c8404c8bd11ca2bf5394d, type: 2}
+  - {fileID: 1460192330109486, guid: c219cdd6cadcbae46a1db92cc1ad6440, type: 2}
   - {fileID: 1472709961246404, guid: e7ca8df9cbb2e794f85efe7cc04e7327, type: 2}
   - {fileID: 1240967683947806, guid: c830ef563d9bacf49bf17ed34fa66cfb, type: 2}
   bgSpeed: 2
   numberOfBgs: 4
   numOfRemovedBgs: 0
   numChangeTerrain: 10
-  spawnRate: 0
   frameCounter: 0
   doubleSpawnChance: 0
-  spawnAtFrame: 120
+  spawnPeriod: 2.5
+  minSpawnPeriod: 0.5
   overlapOffset: 1
   spawnPoint: {fileID: 1873999885}
 --- !u!1 &1054194571
@@ -907,15 +911,16 @@ MonoBehaviour:
   - {fileID: 642666481}
   obstacles: []
   sun: {fileID: 1291623348}
-  maxLanesSpeed: 7
+  maxLanesSpeed: 6
   lanesSpeed: 0
-  rushLanesSpeed: 1
+  rushLanesSpeed: 2
   currentSunHeight: 0
   maxSunHeight: 3.3
   minSunHeight: -1.75
   maxSunsetSpeed: 0.5
   sunsetSpeed: 0
-  collideSpeedPenalty: 2
+  collideSpeedPenalty: 4
+  isGameOver: 0
   buildings: []
   skys: []
 --- !u!4 &1372223181
@@ -1158,9 +1163,9 @@ MonoBehaviour:
   currentLane: 1
   jumpTimeCount: 0
   jumpTimeLimit: 0.25
-  jumpForce: 200
+  jumpForce: 370
   isJumping: 0
-  timeToReachTarget: 0.25
+  timeToReachTarget: 0.15
   directionChosen: 0
   animator: {fileID: 1761150813}
 --- !u!212 &1761150809
@@ -1236,7 +1241,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1

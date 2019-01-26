@@ -14,13 +14,18 @@ public class LanesController : MonoBehaviour {
 	public int numberOfBgs;
 	public int numOfRemovedBgs;
 	public int numChangeTerrain = 10;
-    public int spawnRate = 6;
-	public int frameCounter = 0;
+	public float frameCounter = 0f;
 	public float doubleSpawnChance = 0f;
-	public int spawnAtFrame = 120;
+	public float spawnPeriod = 6f;
+	public float minSpawnPeriod = 0.5f;
 	public float overlapOffset = 1f;
 	public GameObject spawnPoint;
     private GameObject[] laneObjects;
+	private bool isGameOver;
+	public static LanesController instance;
+	void Awake () {
+		instance = this;
+	}
 
     void Start () {
         Vector2 bgSize = bgPrefab.GetComponent<SpriteRenderer>().bounds.size;
@@ -53,6 +58,10 @@ public class LanesController : MonoBehaviour {
 	float GetLanesSpeed() {
 		return GameController.instance.lanesSpeed; // get lanes speed from the controller
 	}	
+	bool GetIsGameOver() {
+		return GameController.instance.isGameOver; // get lanes speed from the controller
+	}	
+
 	public void MoveBackground() {
 		foreach (GameObject bg in bgs) {
 			Vector3 pos = bg.transform.position;
@@ -91,18 +100,22 @@ public class LanesController : MonoBehaviour {
 		bgs.Add(firstBg);
 	}
 
-	void FixedUpdate () {
-		frameCounter++;
+	void Update () {
+		frameCounter += Time.deltaTime;
 		bgSpeed = GetLanesSpeed();
-		if (frameCounter % spawnAtFrame == 0) {
-			RandomInstantiateObstacle();
-			if (spawnAtFrame > 30) {
-				spawnAtFrame -= 1;
-			}	
-			frameCounter = 0;
+		isGameOver = GetIsGameOver();
+		if (!isGameOver) {
+			if (frameCounter >= spawnPeriod) {
+				RandomInstantiateObstacle();
+				if (spawnPeriod > minSpawnPeriod) {
+					spawnPeriod -= 0.1f;
+				}	
+				frameCounter = 0;
+			}
+			MoveBackground();
+			DetectBackground();
 		}
-		MoveBackground();
-		DetectBackground();
+		
 	}
 
 	void RandomInstantiateObstacle() {
@@ -128,11 +141,21 @@ public class LanesController : MonoBehaviour {
 			int randLane = Random.Range(0, laneObjects.Length);
 			Spawn(randLane);
 		}
-		doubleSpawnChance += 0.003f;
+		doubleSpawnChance += 0.01f;
     }
+
+	float randHeight(float min, float max) {
+		float r = Random.Range(0f, 1f);
+		r = Mathf.Pow(r, 3f);
+		return min + (max - min) * r;
+	}
 
 	void Spawn(int randLane, bool isDoubleSpawned = false) {
 		GameObject obstacle = Instantiate(obstacles[0]);
+		// set obstacle's height ranges from [0.5, 1.6]
+		float rh = randHeight(0.5f, 1.6f);
+		obstacle.GetComponent<Obstacle>().SetHeight(rh);
+		// record lane index i
 		obstacle.GetComponent<ObstacleInfo>().lane = randLane;
 		float randPosX = spawnPoint.transform.position.x;
 		Vector3 obsPosition = Vector3.zero;
