@@ -42,7 +42,19 @@ public class Player : MonoBehaviour {
 		lanePos.z = -1; // fixed z-axis: always front
                         //lanePos.y += this.GetComponent<SpriteRenderer>().bounds.size.y / 2;
                         //this.transform.position = lanePos;
-
+        if ((int)l == 0)
+        {
+            this.GetComponent<SpriteRenderer>().sortingOrder = -13;
+        }
+        else if ((int)l == 1)
+        {
+            this.GetComponent<SpriteRenderer>().sortingOrder = -9;
+        }
+        else if ((int)l == 2)
+        {
+            this.GetComponent<SpriteRenderer>().sortingOrder = -5;
+        }
+        
         isSwitchPlane = true;
         time = 0;
         startPosition = this.transform.position;

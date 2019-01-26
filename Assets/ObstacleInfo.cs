@@ -6,6 +6,10 @@ public class ObstacleInfo : MonoBehaviour {
 
     public float startPos;
 	public int lane;
+
+    public GameObject pole;
+    public GameObject extra;
+
 	// Use this for initialization
 	void Start () {
 		

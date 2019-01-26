@@ -62,7 +62,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4061880514620302
 Transform:
   m_ObjectHideFlags: 1
@@ -121,7 +121,7 @@ BoxCollider2D:
     border: {x: 0, y: 0.14583334, z: 0, w: 0.2916667}
     pivot: {x: 0.5, y: 0}
     oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 0.5}
+    newSize: {x: 1, y: 1.05}
     adaptiveTilingThreshold: 0.5
     drawMode: 1
     adaptiveTiling: 0
@@ -154,6 +154,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPos: 0
   lane: 0
+  pole: {fileID: 1126411719638796}
+  extra: {fileID: 1553256414386696}
 --- !u!212 &212439863262389092
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -194,7 +196,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 1, y: 0.5}
+  m_Size: {x: 1, y: 1.05}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -240,7 +242,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 1, y: 0.5}
+  m_Size: {x: 1, y: 0.89}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

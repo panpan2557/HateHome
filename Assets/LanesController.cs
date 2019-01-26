@@ -23,13 +23,14 @@ public class LanesController : MonoBehaviour {
     private GameObject[] laneObjects;
 	private bool isGameOver;
 	public static LanesController instance;
+    private GameObject player;
 	void Awake () {
 		instance = this;
 	}
 
     void Start () {
         Vector2 bgSize = bgPrefab.GetComponent<SpriteRenderer>().bounds.size;
-        
+        player = GameObject.FindGameObjectWithTag("Player");
         laneObjects = GameController.instance.lanes;
         Debug.Log(bgSize.y);
 		bgSpeed = GetLanesSpeed();
@@ -157,7 +158,24 @@ public class LanesController : MonoBehaviour {
 		obstacle.GetComponent<Obstacle>().SetHeight(rh);
 		// record lane index i
 		obstacle.GetComponent<ObstacleInfo>().lane = randLane;
-		float randPosX = spawnPoint.transform.position.x;
+        if (randLane == 0)
+        {
+            obstacle.GetComponent<SpriteRenderer>().sortingOrder = -15;
+            obstacle.GetComponent<ObstacleInfo>().pole.GetComponent<SpriteRenderer>().sortingOrder = -12;
+            obstacle.GetComponent<ObstacleInfo>().extra.GetComponent<SpriteRenderer>().sortingOrder = -14;
+        }
+        else if (randLane == 1) {
+            obstacle.GetComponent<SpriteRenderer>().sortingOrder = -11;
+            obstacle.GetComponent<ObstacleInfo>().pole.GetComponent<SpriteRenderer>().sortingOrder = -8;
+            obstacle.GetComponent<ObstacleInfo>().extra.GetComponent<SpriteRenderer>().sortingOrder = -10;
+        }
+        else if (randLane == 2)
+        {
+            obstacle.GetComponent<SpriteRenderer>().sortingOrder = -7;
+            obstacle.GetComponent<ObstacleInfo>().pole.GetComponent<SpriteRenderer>().sortingOrder = -4;
+            obstacle.GetComponent<ObstacleInfo>().extra.GetComponent<SpriteRenderer>().sortingOrder = -6;
+        }
+        float randPosX = spawnPoint.transform.position.x;
 		Vector3 obsPosition = Vector3.zero;
 		if (isDoubleSpawned) {
 			obsPosition.x = randPosX + overlapOffset;
