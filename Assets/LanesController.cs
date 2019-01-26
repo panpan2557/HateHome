@@ -10,7 +10,7 @@ public class LanesController : MonoBehaviour {
 	TerrainLinkedList t1, t2;
 	TerrainLinkedList currentTerrain;
 	List<GameObject> bgs = new List<GameObject>();
-	public float bgSpeed = 2f;
+	public float bgSpeed;
 	public int numberOfBgs;
 	public int numOfRemovedBgs;
 	public int numChangeTerrain = 10;
@@ -21,6 +21,10 @@ public class LanesController : MonoBehaviour {
         laneObjects = GameController.instance.lanes;
         // init terrain linked list
         t1 = new TerrainLinkedList(terrains[0]);
+	void Start () {
+		bgSpeed = GameController.instance.lanesSpeed; // get lanes speed from the controller
+		// init terrain linked list
+		t1 = new TerrainLinkedList(terrains[0]);
 		t2 = new TerrainLinkedList(terrains[1]);
 		t1.setNext(t2);
 		t2.setNext(t1);
