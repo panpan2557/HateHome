@@ -18,7 +18,15 @@ public class LanesController : MonoBehaviour {
     private GameObject[] laneObjects;
 
     void Start () {
+        Vector2 bgSize = bgPrefab.GetComponent<SpriteRenderer>().bounds.size;
+        
         laneObjects = GameController.instance.lanes;
+        Debug.Log(bgSize.y);
+        //for (int i =0; i < laneObjects.Length; i++) {
+        //    Vector3 v = laneObjects[i].transform.position;
+        //    v.y = bgSize.y / 3 * i;
+        //    laneObjects[i].transform.position = v;
+        //}
         // init terrain linked list
 		bgSpeed = GameController.instance.lanesSpeed; // get lanes speed from the controller
 		// init terrain linked list
@@ -93,15 +101,17 @@ public class LanesController : MonoBehaviour {
     void RandomInstantiateObstacle(GameObject terrain) {
         int randAmount = Random.Range(spawnRate - 5, spawnRate + 5);
         for (int i = 0; i < randAmount; i++) {
-            GameObject obstacle = Instantiate(obstacles[Random.Range(0, obstacles.Length)]);
+            //GameObject obstacle = Instantiate(obstacles[Random.Range(0, obstacles.Length)]);
+            GameObject obstacle = Instantiate(obstacles[0]);
             int randPosX = Random.Range(-128, 128);
             int randLane = Random.Range(0, laneObjects.Length);
             obstacle.transform.parent = terrain.transform;
             Vector3 obsPosition = Vector3.zero;
             obsPosition.x = randPosX/10f;
-            obsPosition.y = laneObjects[randLane].transform.position.y - terrain.transform.position.y+ obstacle.GetComponent<SpriteRenderer>().bounds.size.y / 2;
+            Debug.LogError(obstacle.transform.position.y + "/"+ (randLane + 1));
+            obsPosition.y = obstacle.transform.position.y * (randLane + 1);
             obsPosition.z = -1;
-            obstacle.transform.localPosition = obsPosition;
+            obstacle.transform.position = obsPosition;
         }
         spawnRate++;
     }

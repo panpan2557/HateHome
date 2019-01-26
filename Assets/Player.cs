@@ -13,6 +13,9 @@ public class Player : MonoBehaviour {
 	public bool isJumping;
 	private GameObject[] laneObjects;
 	private Rigidbody2D rigid;
+
+    public Animator animator;
+
 	void Start () {
 		rigid = this.GetComponent<Rigidbody2D>();
 		laneObjects = GameController.instance.lanes;
@@ -67,7 +70,7 @@ public class Player : MonoBehaviour {
             Debug.Log("Jump");
             rigid.AddForce(Vector2.up * jumpForce);
             isJumping = true;
-
+            animator.SetInteger("status",1);
         }
         if (Input.GetKey(KeyCode.Space) && isJumping) {
             jumpTimeCount += Time.deltaTime;
@@ -76,10 +79,13 @@ public class Player : MonoBehaviour {
                 Debug.Log("height jump");
                 rigid.AddForce(Vector2.up * jumpForce / 20);
             }
+            animator.SetInteger("status", 1);
         }
         if (Input.GetKeyUp(KeyCode.Space)) {
             jumpTimeCount = 0;
+            //animator.SetInteger("status", 1);
         }
+
 	}
 
 	void OnCollisionEnter2D (Collision2D col) {
@@ -91,7 +97,8 @@ public class Player : MonoBehaviour {
 		if (col.gameObject.tag == "Lane") {
 			isJumping = false;
 			jumpTimeCount = 0;
-		}
+            animator.SetInteger("status", 0);
+        }
     }
 	
 	void Update () {
