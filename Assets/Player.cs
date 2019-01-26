@@ -125,6 +125,7 @@ public class Player : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D col) {
 		if (col.gameObject.tag == "Obstacle") {
+            Debug.Log("Player: Collide with Obstacle");
 			if (col.gameObject.GetComponent<ObstacleInfo>().lane == (int)currentLane) {
 				GameController.instance.CollideWithObstacle();
 			}

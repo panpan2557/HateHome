@@ -39,9 +39,10 @@ GameObject:
   - component: {fileID: 212439863262389092}
   - component: {fileID: 114256324930466388}
   - component: {fileID: 61098961579890020}
+  - component: {fileID: 114432955687499782}
   m_Layer: 0
   m_Name: obstacle
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113,7 +114,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.010678768, y: 0.55606365}
@@ -141,6 +142,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lanesSpeed: 0
+--- !u!114 &114432955687499782
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1460192330109486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10ec2a3574e3e0943b372505c6820996, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPos: 0
+  lane: 0
 --- !u!114 &114890778798868912
 MonoBehaviour:
   m_ObjectHideFlags: 1
