@@ -14,11 +14,16 @@ public class Player : MonoBehaviour {
 	private GameObject[] laneObjects;
 	private Rigidbody2D rigid;
 
-    private bool isOnPlane;
+    private bool isSwitchPlane;
     private float time;
     public float timeToReachTarget;
     private Vector2 startPosition;
     private Vector2 target;
+    private Vector2 startPos;
+    private Vector2 direction;
+    public bool directionChosen;
+    private Vector3 mouseOrigin;    // Position of cursor when mouse dragging starts
+    private bool isPanning;
 
     public Animator animator;
 
@@ -36,6 +41,8 @@ public class Player : MonoBehaviour {
 		lanePos.z = -1; // fixed z-axis: always front
                         //lanePos.y += this.GetComponent<SpriteRenderer>().bounds.size.y / 2;
                         //this.transform.position = lanePos;
+
+        isSwitchPlane = true;
         time = 0;
         startPosition = this.transform.position;
         target = lanePos;
@@ -56,7 +63,7 @@ public class Player : MonoBehaviour {
 	void CheckSwitchLane() {
 		if (!isJumping) { // cannot switch lane while jumping
 			if (Input.GetKeyDown(KeyCode.UpArrow)) {
-			// change lanes UP
+            // change lanes UP
 			this.currentLane -= 1;
 			if (this.currentLane < lanes.lane1) {
 				this.currentLane = lanes.lane1;
@@ -64,8 +71,8 @@ public class Player : MonoBehaviour {
 			SwitchLanes(currentLane);
 
 			} else if (Input.GetKeyDown(KeyCode.DownArrow)) {
-				// change lanes DOWN
-				this.currentLane += 1;
+                // change lanes DOWN
+                this.currentLane += 1;
 				if (this.currentLane > lanes.lane3) {
 					this.currentLane = lanes.lane3;
 				}
@@ -75,28 +82,32 @@ public class Player : MonoBehaviour {
 	}
 
 	void CheckJump() {
-		// Hold button to jump higher
-		if (Input.GetKeyDown(KeyCode.Space) && !isJumping) {
-            jumpTimeCount += Time.deltaTime;
-            Debug.Log("Jump");
-            rigid.AddForce(Vector2.up * jumpForce);
-            isJumping = true;
-            animator.SetInteger("status",1);
-        }
-        if (Input.GetKey(KeyCode.Space) && isJumping) {
-            jumpTimeCount += Time.deltaTime;
-            if (jumpTimeCount < jumpTimeLimit)
+        // Hold button to jump higher
+        if (!isSwitchPlane) {
+            if (Input.GetKeyDown(KeyCode.Space) && !isJumping)
             {
-                Debug.Log("height jump");
-                rigid.AddForce(Vector2.up * jumpForce / 20);
+                jumpTimeCount += Time.deltaTime;
+                Debug.Log("Jump");
+                rigid.AddForce(Vector2.up * jumpForce);
+                isJumping = true;
+                animator.SetInteger("status", 1);
             }
-            animator.SetInteger("status", 1);
+            if (Input.GetKey(KeyCode.Space) && isJumping)
+            {
+                jumpTimeCount += Time.deltaTime;
+                if (jumpTimeCount < jumpTimeLimit)
+                {
+                    Debug.Log("height jump");
+                    rigid.AddForce(Vector2.up * jumpForce / 20);
+                }
+                animator.SetInteger("status", 1);
+            }
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                jumpTimeCount = 0;
+                //animator.SetInteger("status", 1);
+            }
         }
-        if (Input.GetKeyUp(KeyCode.Space)) {
-            jumpTimeCount = 0;
-            //animator.SetInteger("status", 1);
-        }
-
 	}
 
 	void OnCollisionEnter2D (Collision2D col) {
@@ -113,10 +124,71 @@ public class Player : MonoBehaviour {
     }
 	
 	void Update () {
-        time += Time.deltaTime / timeToReachTarget;
-        transform.position = Vector3.Lerp(startPosition, target, time);
+        if (isSwitchPlane && !isJumping) {
+            time += Time.deltaTime / timeToReachTarget;
+            transform.position = Vector3.Lerp(startPosition, target, time);
+            if (Vector3.Distance(transform.position, target) < 0.01) {
+                isSwitchPlane = false;
+            }
+        }
 
+        CheckJump();
         CheckSwitchLane();
-		//CheckJump();
-	}
+
+        //// Track a single touch as a direction control.
+        //if (Input.touchCount > 0)
+        //{
+        //    Touch touch = Input.GetTouch(0);
+
+        //    // Handle finger movements based on touch phase.
+        //    switch (touch.phase)
+        //    {
+        //        // Record initial touch position.
+        //        case TouchPhase.Began:
+        //            startPos = touch.position;
+        //            directionChosen = false;
+        //            break;
+
+        //        // Determine direction by comparing the current touch position with the initial one.
+        //        case TouchPhase.Moved:
+        //            direction = touch.position - startPos;
+        //            break;
+
+        //        // Report that a direction has been chosen when the finger is lifted.
+        //        case TouchPhase.Ended:
+        //            directionChosen = true;
+        //            break;
+        //    }
+        //}
+        //if (directionChosen)
+        //{
+        //    // Something that uses the chosen direction...
+        //}
+
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    mouseOrigin = Input.mousePosition;
+        //    isPanning = true;
+        //}
+
+        //if (!Input.GetMouseButton(0))
+        //    isPanning = false;
+
+        //if (isPanning)
+        //{
+        //    Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - mouseOrigin);
+
+
+        //    Vector3 move = new Vector3(pos.x, 0, 0);
+        //    transform.Translate(move * panSpeed * Time.deltaTime, Space.Self);
+
+        //    Vector3 clampedPosition = transform.position;
+        //    clampedPosition.x = Mathf.Clamp(transform.position.x, leftValue, rightValue);
+        //    clampedPosition.z = Mathf.Clamp(transform.position.z, zStabilizer, zStabilizer);
+        //    transform.position = clampedPosition;
+
+        //}
+
+
+    }
 }

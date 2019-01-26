@@ -15,19 +15,18 @@ public class LanesController : MonoBehaviour {
 	public int numOfRemovedBgs;
 	public int numChangeTerrain = 10;
     public int spawnRate = 6;
+	public int frameCounter = 0;
+	public float doubleSpawnChance = 0f;
+	public int spawnAtFrame = 120;
+	public float overlapOffset = 1f;
+	public GameObject spawnPoint;
     private GameObject[] laneObjects;
 
     void Start () {
         Vector2 bgSize = bgPrefab.GetComponent<SpriteRenderer>().bounds.size;
         
         laneObjects = GameController.instance.lanes;
-        Debug.Log(bgSize);
-        //for (int i =0; i < laneObjects.Length; i++) {
-        //    Vector3 v = laneObjects[i].transform.position;
-        //    v.y = bgSize.y / 3 * i;
-        //    laneObjects[i].transform.position = v;
-        //}
-        // init terrain linked list
+        Debug.Log(bgSize.y);
 		bgSpeed = GameController.instance.lanesSpeed; // get lanes speed from the controller
 		// init terrain linked list
 		t1 = new TerrainLinkedList(terrains[0]);
@@ -42,23 +41,19 @@ public class LanesController : MonoBehaviour {
 			bg.transform.parent = this.transform;
 			Vector3 newPos = this.transform.position;
 			newPos.x += bg.GetComponent<SpriteRenderer>().bounds.size.x * i;
-            //newPos.z = 1;
+            newPos.y = -3;
 			bg.transform.position = newPos;
-
-            bg.GetComponent<SpriteRenderer>().sprite = currentTerrain.t;
-            RandomInstantiateObstacle(bg);
-
+			bg.GetComponent<SpriteRenderer>().sprite = currentTerrain.t;
             bgs.Add(bg);
 		}
 		currentTerrain = currentTerrain.next();
-        //laneObjects = GameController.instance.lanes;
         Debug.Log("starttt    "+laneObjects.Length);
     }
 	
 	public void MoveBackground() {
 		foreach (GameObject bg in bgs) {
 			Vector3 pos = bg.transform.position;
-			pos.x -= bgSpeed * Time.deltaTime;
+			pos.x -= (bgSpeed * Time.deltaTime);
 			bg.transform.position = pos;
 		}
 	}
@@ -89,34 +84,64 @@ public class LanesController : MonoBehaviour {
 	void SwapBackground() {
 		GameObject firstBg = bgs[0];
         ClearRandomObstacle(firstBg);
-        RandomInstantiateObstacle(firstBg);
         bgs.RemoveAt(0);
 		bgs.Add(firstBg);
 	}
 
-	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
+		frameCounter++;
+		if (frameCounter % spawnAtFrame == 0) {
+			RandomInstantiateObstacle();
+			if (spawnAtFrame > 30) {
+				spawnAtFrame -= 1;
+			}	
+			frameCounter = 0;
+		}
 		MoveBackground();
 		DetectBackground();
 	}
 
-    void RandomInstantiateObstacle(GameObject terrain) {
-        int randAmount = Random.Range(spawnRate - 5, spawnRate + 5);
-        for (int i = 0; i < randAmount; i++) {
-            //GameObject obstacle = Instantiate(obstacles[Random.Range(0, obstacles.Length)]);
-            GameObject obstacle = Instantiate(obstacles[0]);
-            int randPosX = Random.Range(-128, 128);
-            int randLane = Random.Range(0, laneObjects.Length);
-            obstacle.transform.parent = terrain.transform;
-            Vector3 obsPosition = Vector3.zero;
-            obsPosition.x = randPosX/10f;
-            Debug.LogError(obstacle.transform.position.y + "/"+ (randLane + 1));
-            obsPosition.y = obstacle.transform.position.y * (randLane + 1);
-            obsPosition.z = -1;
-            obstacle.transform.position = obsPosition;
-        }
-        spawnRate++;
+	void RandomInstantiateObstacle() {
+		float randChance = Random.Range(0f, 1f);
+		Debug.Log("randChance: " + randChance);
+		// Double spawn
+		if (randChance < doubleSpawnChance) {
+			List<int> list = new List<int>();
+			for (int i = 0; i < laneObjects.Length; i++) {
+				list.Add(i);
+			}
+			int laneI = Random.Range(0, list.Count);
+			int randLane1 = list[laneI];
+			// remove first element
+			list.RemoveAt(laneI);
+			laneI = Random.Range(0, list.Count);
+			int randLane2 = list[laneI];
+			Spawn(randLane1);
+			Spawn(randLane2, isDoubleSpawned: true);
+		}
+		// Single spawn 
+		else {
+			int randLane = Random.Range(0, laneObjects.Length);
+			Spawn(randLane);
+		}
+		doubleSpawnChance += 0.003f;
     }
+
+	void Spawn(int randLane, bool isDoubleSpawned = false) {
+		GameObject obstacle = Instantiate(obstacles[0]);
+		float randPosX = spawnPoint.transform.position.x;
+		Vector3 obsPosition = Vector3.zero;
+		if (isDoubleSpawned) {
+			obsPosition.x = randPosX + overlapOffset;
+		} else {
+			obsPosition.x = randPosX;
+		}
+		Debug.Log("laneY: " + laneObjects[randLane].transform.position.y);
+		obsPosition.y = laneObjects[randLane].transform.position.y;
+		obsPosition.y = obstacle.transform.position.y - (randLane * 0.5f);
+		obsPosition.z = -1;
+		obstacle.transform.localPosition = obsPosition;
+	}
 
     void ClearRandomObstacle(GameObject terrain) {
         foreach (Transform t in terrain.transform) {

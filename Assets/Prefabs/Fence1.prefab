@@ -22,9 +22,10 @@ GameObject:
   - component: {fileID: 212926666217291448}
   - component: {fileID: 61941661414875908}
   - component: {fileID: 114493806996555904}
+  - component: {fileID: 114913904460647602}
   m_Layer: 0
   m_Name: Fence1
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79,6 +80,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPos: -0.8743333
+--- !u!114 &114913904460647602
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1570594578913834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f833e4780627d4abda52b4ea2d670dd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lanesSpeed: 0
 --- !u!212 &212926666217291448
 SpriteRenderer:
   m_ObjectHideFlags: 1
