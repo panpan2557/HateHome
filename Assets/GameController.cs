@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
@@ -191,6 +192,10 @@ public class GameController : MonoBehaviour {
         //pos.y -= sunsetSpeed * Time.deltaTime;
         //sun.transform.position = pos;
         //currentSunHeight = pos.y;
+    }
+
+    public void RerunAgain() {
+        SceneManager.LoadScene("Intro");
     }
 
 	bool isSunAtMin() {
