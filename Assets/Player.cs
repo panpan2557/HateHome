@@ -33,8 +33,10 @@ public class Player : MonoBehaviour {
     public GameObject endingWord;
     public GameObject replayButton;
     private GameObject mom;
+    private Vector3 mousePos;
 
-	void Start () {
+
+    void Start () {
 		rigid = this.GetComponent<Rigidbody2D>();
         isMomExist = false;
         //timeToReachTarget = 0.5f;
@@ -100,6 +102,38 @@ public class Player : MonoBehaviour {
 			}
 		}
 	}
+
+    void CheckJumpTab() {
+        // Hold button to jump higher
+        if (!isSwitchPlane)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                mousePos = Input.mousePosition;
+                jumpTimeCount += Time.deltaTime;
+                Debug.Log("Jump");
+            }
+            if (Input.GetMouseButton(0))
+            {
+                jumpTimeCount += Time.deltaTime;
+            }
+            if (Input.GetMouseButtonUp(0))
+            {
+                //if (Vector3.Distance(mousePos, Input.mousePosition) < 0.1f)
+                //{
+                    isJumping = true;
+                    
+                    Debug.Log("height jump");
+                    jumpTimeCount = Mathf.Clamp(jumpTimeCount, 0,1.5f);
+                    rigid.AddForce(Vector2.up * jumpForce * (1+jumpTimeCount));
+                  
+                    animator.SetInteger("status", 1);
+                    jumpTimeCount = 0;
+                //}
+                //animator.SetInteger("status", 1);
+            }
+        }
+    }
 
 	void CheckJump() {
         // Hold button to jump higher
@@ -180,6 +214,22 @@ public class Player : MonoBehaviour {
         } 
     }
 
+    public void PrintTab(string type) {
+        Debug.LogError(type);
+        if (!GameController.instance.isGameOver)
+        {
+            if (!isSwitchPlane)
+            {
+                //if (!isJumping) {
+                //    Debug.Log("Jump");
+                //    rigid.AddForce(Vector2.up * jumpForce);
+                //    isJumping = true;
+                //    animator.SetInteger("status", 1);
+                //}
+            }
+        }
+    }
+
     public void SpawnMom() {
         mom = Instantiate(momPrefab);
         Vector3 newPos = this.transform.position;
@@ -206,7 +256,7 @@ public class Player : MonoBehaviour {
                     isSwitchPlane = false;
                 }
             }
-
+            CheckJumpTab();
             CheckJump();
             CheckSwitchLane();
         }
@@ -240,26 +290,7 @@ public class Player : MonoBehaviour {
         //    // Something that uses the chosen direction...
         //}
 
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    mouseOrigin = Input.mousePosition;
-        //    Debug.Log(mouseOrigin);
-        //    isPanning = true;
-        //}
-
-        //if (!Input.GetMouseButton(0)) {
-        //    isPanning = false;
-        //}
-
-        //if (isPanning)
-        //{
-        //    Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - mouseOrigin);
-
-
-        //    Vector3 move = new Vector3(pos.x, pos.y, 0);
-        //    Debug.LogError(move);
-
-        //}
+        
 
 
     }

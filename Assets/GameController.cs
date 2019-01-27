@@ -20,6 +20,7 @@ public class GameController : MonoBehaviour {
 	public static GameController instance;
     private float time;
     private float distanceCounter;
+    private bool canPlayEnding;
 
     public List<GameObject> buildings;
     public List<GameObject> skys;
@@ -34,7 +35,7 @@ public class GameController : MonoBehaviour {
         //currentSunHeight = minSunHeight;
         buildings = this.sun.GetComponent<SunSystemInfo>().buildings;
         skys = this.sun.GetComponent<SunSystemInfo>().skys;
-        time = 3;
+        canPlayEnding = false;
         distanceCounter = 0;
     }
 	void Update () {
@@ -50,13 +51,13 @@ public class GameController : MonoBehaviour {
                 //Destroy(o);
                 o.GetComponent<BoxCollider2D>().enabled = false;
 			}
-            if (time == 0)
+            if (canPlayEnding)
             {
                 GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().SetInteger("status", 3);
                 // Stop lanes, obstacle generation
                 if (lanesSpeed > 0)
                 {
-                    Debug.LogError(lanesSpeed + "/" + endingSpeed * Time.deltaTime);
+                    //Debug.LogError(lanesSpeed + "/" + endingSpeed * Time.deltaTime);
                     lanesSpeed -= endingSpeed * Time.deltaTime;
                 }
                 else
@@ -90,8 +91,8 @@ public class GameController : MonoBehaviour {
                 { // accelerate when do not collide
                     if (lanesSpeed + rushLanesSpeed * Time.deltaTime >= maxLanesSpeed)
                     {
-                        time = 0;
                         lanesSpeed = maxLanesSpeed;
+                        canPlayEnding = true;
                     }
                     else {
                         lanesSpeed += rushLanesSpeed * Time.deltaTime;
