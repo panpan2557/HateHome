@@ -35,6 +35,7 @@ public class Player : MonoBehaviour {
     private GameObject mom;
     private Vector3 mousePos;
 
+    public GameObject soundEffect;
 
     void Start () {
 		rigid = this.GetComponent<Rigidbody2D>();
@@ -107,23 +108,24 @@ public class Player : MonoBehaviour {
         // Hold button to jump higher
         if (!isSwitchPlane)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                mousePos = Input.mousePosition;
-                jumpTimeCount += Time.deltaTime;
-                Debug.Log("Jump");
-            }
-            if (Input.GetMouseButton(0))
-            {
-                jumpTimeCount += Time.deltaTime;
-            }
+            //if (Input.GetMouseButtonDown(0))
+            //{
+            //    mousePos = Input.mousePosition;
+            //    jumpTimeCount += Time.deltaTime;
+            //    Debug.Log("Jump");
+            //}
+            //if (Input.GetMouseButton(0))
+            //{
+            //    jumpTimeCount += Time.deltaTime;
+            //}
             if (Input.GetMouseButtonUp(0) &&!isJumping)
             {
                 isJumping = true;
 
                 Debug.Log("height jump");
-                jumpTimeCount = Mathf.Clamp(jumpTimeCount, 0, 0.5f);
-                rigid.AddForce(Vector2.up * jumpForce * (1 + jumpTimeCount));
+                //jumpTimeCount = Mathf.Clamp(jumpTimeCount, 0, 0.5f);
+                //rigid.AddForce(Vector2.up * jumpForce * (1 + jumpTimeCount));
+                rigid.AddForce(Vector2.up * jumpForce);
 
                 animator.SetInteger("status", 1);
                 jumpTimeCount = 0;
@@ -178,7 +180,9 @@ public class Player : MonoBehaviour {
 		if (col.gameObject.tag == "Obstacle") {
             Debug.Log("Player: Collide with Obstacle");
 			if (col.gameObject.GetComponent<ObstacleInfo>().lane == (int)currentLane) {
-				GameController.instance.CollideWithObstacle();
+                soundEffect.GetComponent<SoundInfo>().replay.Play();
+                col.gameObject.GetComponent<BoxCollider2D>().enabled = false;
+                GameController.instance.CollideWithObstacle();
 			}
 		}
 	}
@@ -217,17 +221,19 @@ public class Player : MonoBehaviour {
         {
             if (!isSwitchPlane)
             {
-                //if (!isJumping) {
-                //    Debug.Log("Jump");
-                //    rigid.AddForce(Vector2.up * jumpForce);
-                //    isJumping = true;
-                //    animator.SetInteger("status", 1);
-                //}
+                if (!isJumping)
+                {
+                    Debug.Log("Jump");
+                    rigid.AddForce(Vector2.up * jumpForce);
+                    isJumping = true;
+                    animator.SetInteger("status", 1);
+                }
             }
         }
     }
 
     public void SpawnMom() {
+
         mom = Instantiate(momPrefab);
         Vector3 newPos = this.transform.position;
         //newPos.y -= -3.33f;
@@ -237,6 +243,7 @@ public class Player : MonoBehaviour {
 
     public void DestroyMom() {
         Destroy(mom);
+        soundEffect.GetComponent<SoundInfo>().mom.Play();
         endingWord.SetActive(true);
         replayButton.SetActive(true);
     }
@@ -255,7 +262,7 @@ public class Player : MonoBehaviour {
             }
             CheckJump();
             CheckSwitchLane();
-            CheckJumpTab();
+            //CheckJumpTab();
         }
         //// Track a single touch as a direction control.
         //if (Input.touchCount > 0)

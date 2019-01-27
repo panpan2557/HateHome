@@ -70,7 +70,6 @@ public class LanesController : MonoBehaviour {
 			pos.x -= (bgSpeed * Time.deltaTime);
             distantScore += bgSpeed * Time.deltaTime;
             GameController.instance.score.text = Mathf.Round(distantScore) + " M";
-
             bg.transform.position = pos;
 		}
 	}

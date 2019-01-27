@@ -39,7 +39,9 @@ public class GameController : MonoBehaviour {
         distanceCounter = 0;
     }
 	void Update () {
-        Debug.Log(currentSunHeight + "/" + minSunHeight + " : " + isSunAtMin());
+
+
+
 		if (isSunAtMin()) {
 			// Gameover
 			Debug.Log("Gameover!");
@@ -54,6 +56,7 @@ public class GameController : MonoBehaviour {
             if (canPlayEnding)
             {
                 GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().SetInteger("status", 3);
+                //GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().SetBool("isGameOver", true);
                 // Stop lanes, obstacle generation
                 if (lanesSpeed > 0)
                 {
@@ -87,7 +90,7 @@ public class GameController : MonoBehaviour {
                 }
             }
             else {
-                if (lanesSpeed < maxLanesSpeed)
+                if (lanesSpeed <= maxLanesSpeed)
                 { // accelerate when do not collide
                     if (lanesSpeed + rushLanesSpeed * Time.deltaTime >= maxLanesSpeed)
                     {
@@ -95,9 +98,15 @@ public class GameController : MonoBehaviour {
                         lanesSpeed = maxLanesSpeed;
                         canPlayEnding = true;
                     }
-                    else {
+                    else
+                    {
                         lanesSpeed += rushLanesSpeed * Time.deltaTime;
                     }
+                }
+                else {
+                    Debug.Log("Can play Ending");
+                    lanesSpeed = maxLanesSpeed;
+                    canPlayEnding = true;
                 }
             }
             
@@ -148,11 +157,17 @@ public class GameController : MonoBehaviour {
         GameObject sun = this.sun.GetComponent<SunSystemInfo>().sun;
         Vector3 rot = sun.transform.eulerAngles;
         Debug.Log("rot.z: " + rot.z + ", maxSunHeight: " + maxSunHeight);
-        rot.z += sunsetSpeed * Time.deltaTime;
-        sun.transform.eulerAngles = rot;
+        if (rot.z > minSunHeight) {
+            rot.z += sunsetSpeed * Time.deltaTime;
+            sun.transform.eulerAngles = rot;
+        } else
+        {
+            rot.z = minSunHeight;
+        }
         currentSunHeight = rot.z;
-        
-        for (int i = 0; i < buildings.Count; i++) {
+
+        for (int i = 0; i < buildings.Count; i++)
+        {
             SpriteRenderer b = buildings[i].GetComponent<SpriteRenderer>();
             SpriteRenderer s = skys[i].GetComponent<SpriteRenderer>();
             Color color = b.color;
@@ -203,6 +218,7 @@ public class GameController : MonoBehaviour {
     }
 
 	bool isSunAtMin() {
+
 		return currentSunHeight <= minSunHeight;
 	}
 
