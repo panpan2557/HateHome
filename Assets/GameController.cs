@@ -91,6 +91,7 @@ public class GameController : MonoBehaviour {
                 { // accelerate when do not collide
                     if (lanesSpeed + rushLanesSpeed * Time.deltaTime >= maxLanesSpeed)
                     {
+                        Debug.Log("Can play Ending");
                         lanesSpeed = maxLanesSpeed;
                         canPlayEnding = true;
                     }

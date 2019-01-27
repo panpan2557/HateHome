@@ -117,19 +117,16 @@ public class Player : MonoBehaviour {
             {
                 jumpTimeCount += Time.deltaTime;
             }
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonUp(0) &&!isJumping)
             {
-                //if (Vector3.Distance(mousePos, Input.mousePosition) < 0.1f)
-                //{
-                    isJumping = true;
-                    
-                    Debug.Log("height jump");
-                    jumpTimeCount = Mathf.Clamp(jumpTimeCount, 0,1.5f);
-                    rigid.AddForce(Vector2.up * jumpForce * (1+jumpTimeCount));
-                  
-                    animator.SetInteger("status", 1);
-                    jumpTimeCount = 0;
-                //}
+                isJumping = true;
+
+                Debug.Log("height jump");
+                jumpTimeCount = Mathf.Clamp(jumpTimeCount, 0, 0.5f);
+                rigid.AddForce(Vector2.up * jumpForce * (1 + jumpTimeCount));
+
+                animator.SetInteger("status", 1);
+                jumpTimeCount = 0;
                 //animator.SetInteger("status", 1);
             }
         }
@@ -256,9 +253,9 @@ public class Player : MonoBehaviour {
                     isSwitchPlane = false;
                 }
             }
-            CheckJumpTab();
             CheckJump();
             CheckSwitchLane();
+            CheckJumpTab();
         }
         //// Track a single touch as a direction control.
         //if (Input.touchCount > 0)
