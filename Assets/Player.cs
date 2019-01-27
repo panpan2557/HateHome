@@ -36,6 +36,7 @@ public class Player : MonoBehaviour {
     private Vector3 mousePos;
 
     public GameObject soundEffect;
+	public Animator cameraAnimator;
 
     void Start () {
 		rigid = this.GetComponent<Rigidbody2D>();
@@ -182,6 +183,7 @@ public class Player : MonoBehaviour {
 			if (col.gameObject.GetComponent<ObstacleInfo>().lane == (int)currentLane) {
                 soundEffect.GetComponent<SoundInfo>().replay.Play();
                 col.gameObject.GetComponent<BoxCollider2D>().enabled = false;
+				cameraAnimator.SetBool("isColliding", true);
                 GameController.instance.CollideWithObstacle();
 			}
 		}

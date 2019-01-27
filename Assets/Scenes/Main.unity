@@ -523,6 +523,8 @@ GameObject:
   - component: {fileID: 534669905}
   - component: {fileID: 534669904}
   - component: {fileID: 534669903}
+  - component: {fileID: 534669906}
+  - component: {fileID: 534669907}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: Untagged
@@ -536,7 +538,7 @@ AudioListener:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 534669902}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &534669904
 Camera:
   m_ObjectHideFlags: 0
@@ -590,6 +592,35 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &534669906
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 534669902}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a3ee36c7b65714ee99682bc5df5270cd, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &534669907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 534669902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82231dfba594a4071b77a14397dc6fc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &538301999
 GameObject:
   m_ObjectHideFlags: 0
@@ -2364,6 +2395,7 @@ MonoBehaviour:
   endingWord: {fileID: 1645027608}
   replayButton: {fileID: 1839988652}
   soundEffect: {fileID: 1606479851}
+  cameraAnimator: {fileID: 534669906}
 --- !u!212 &1761150809
 SpriteRenderer:
   m_ObjectHideFlags: 0
